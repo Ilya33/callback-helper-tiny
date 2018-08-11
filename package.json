@@ -1,0 +1,25 @@
+{
+  "name": "callback-helper-tiny",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/callbackHelperTiny.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ilya33/callback-helper-tiny.git"
+  },
+  "keywords": [
+    "callback",
+    "helper",
+    "all",
+    "wait"
+  ],
+  "author": "Ilya Pavlov <fsilux@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ilya33/callback-helper-tiny/issues"
+  },
+  "homepage": "https://github.com/Ilya33/callback-helper-tiny#readme"
+}
