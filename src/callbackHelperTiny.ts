@@ -6,6 +6,12 @@ export function clbWaitAll(
     clb: (err: Error | null, data?: any) => void
 ): void {
     let l: number = fns.length;
+
+    if (0 === l) {
+        clb(null, []);
+        return;
+    }
+
     let n: number = 0;
     let hasError: boolean = false;
     let i: number;
@@ -37,6 +43,12 @@ export function clbQueue(
     clb: (err: Error | null, data?: any) => void
 ): void {
     let l: number = fns.length;
+
+    if (0 === l) {
+        clb(null, []);
+        return;
+    }
+
     let n: number = 0;
     let results: any[] = [];
 

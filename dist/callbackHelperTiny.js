@@ -3,11 +3,15 @@
 // callback-helper-tiny is licensed under the MIT License
 Object.defineProperty(exports, "__esModule", { value: true });
 function clbWaitAll(fns, clb) {
-    var l = fns.length;
-    var n = 0;
-    var hasError = false;
-    var i;
-    var mixedResults = [];
+    let l = fns.length;
+    if (0 === l) {
+        clb(null, []);
+        return;
+    }
+    let n = 0;
+    let hasError = false;
+    let i;
+    let mixedResults = [];
     for (i = 0; i < l; i++) {
         (fns[i])(function (err, data) {
             if (false === hasError) {
@@ -27,10 +31,14 @@ function clbWaitAll(fns, clb) {
 }
 exports.clbWaitAll = clbWaitAll;
 function clbQueue(fns, clb) {
-    var l = fns.length;
-    var n = 0;
-    var results = [];
-    var next = function (err, data) {
+    let l = fns.length;
+    if (0 === l) {
+        clb(null, []);
+        return;
+    }
+    let n = 0;
+    let results = [];
+    let next = function (err, data) {
         if (err) {
             clb(err, data);
         }
