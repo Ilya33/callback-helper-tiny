@@ -1,6 +1,6 @@
 "use strict";
-// callback-helper-tiny - Copyright (C) 2018 Ilya Pavlov
-// callback-helper-tiny is licensed under the MIT License
+// callbacks-helper-tiny - Copyright (C) 2018 Ilya Pavlov
+// callbacks-helper-tiny is licensed under the MIT License
 Object.defineProperty(exports, "__esModule", { value: true });
 function clbWaitAll(fns, clb) {
     let l = fns.length;

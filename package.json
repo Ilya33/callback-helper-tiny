@@ -1,8 +1,8 @@
 {
-  "name": "callback-helper-tiny",
+  "name": "callbacks-helper-tiny",
   "version": "0.1.0",
   "description": "",
-  "main": "dist/callbackHelperTiny.js",
+  "main": "dist/callbacksHelperTiny.js",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
@@ -11,20 +11,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Ilya33/callback-helper-tiny.git"
+    "url": "git+https://github.com/Ilya33/callbacks-helper-tiny.git"
   },
   "keywords": [
     "callback",
     "helper",
     "all",
-    "wait"
+    "wait",
+    "queue"
   ],
   "author": "Ilya Pavlov <fsilux@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Ilya33/callback-helper-tiny/issues"
+    "url": "https://github.com/Ilya33/callbacks-helper-tiny/issues"
   },
-  "homepage": "https://github.com/Ilya33/callback-helper-tiny#readme",
+  "homepage": "https://github.com/Ilya33/callbacks-helper-tiny#readme",
   "devDependencies": {
     "@types/chai": "^4.1.4",
     "@types/mocha": "^5.2.5",

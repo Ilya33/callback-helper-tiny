@@ -2,7 +2,7 @@
 
 var assert = require('chai').assert;
 var expect = require('chai').expect;
-var cht = require('../dist/callbackHelperTiny.js');
+var cht = require('../dist/callbacksHelperTiny.js');
 
 
 

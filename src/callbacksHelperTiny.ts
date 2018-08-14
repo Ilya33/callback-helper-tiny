@@ -1,5 +1,5 @@
-// callback-helper-tiny - Copyright (C) 2018 Ilya Pavlov
-// callback-helper-tiny is licensed under the MIT License
+// callbacks-helper-tiny - Copyright (C) 2018 Ilya Pavlov
+// callbacks-helper-tiny is licensed under the MIT License
 
 export function clbWaitAll(
     fns: (( clb: ( err: Error | null, data?: any ) => void ) => void)[],
