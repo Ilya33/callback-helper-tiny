@@ -36,6 +36,8 @@ function clbQueue(fns, clb) {
         clb(null, []);
         return;
     }
+    const maxStackCalls = 256;
+    let stackCalls = maxStackCalls;
     let n = 0;
     let results = [];
     let next = function (err, data) {
@@ -48,7 +50,15 @@ function clbQueue(fns, clb) {
                 clb(null, results);
             }
             else {
-                (fns[n])(next);
+                if (0 === --stackCalls) {
+                    stackCalls = maxStackCalls;
+                    setTimeout(function () {
+                        (fns[n])(next);
+                    }, 0);
+                }
+                else {
+                    (fns[n])(next);
+                }
             }
         }
     };

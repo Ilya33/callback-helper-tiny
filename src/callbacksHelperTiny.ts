@@ -49,6 +49,9 @@ export function clbQueue(
         return;
     }
 
+    const maxStackCalls: number = 256;
+    let stackCalls: number = maxStackCalls;
+
     let n: number = 0;
     let results: any[] = [];
 
@@ -63,7 +66,16 @@ export function clbQueue(
                 clb(null, results);
             }
             else {
-                (fns[n])(next);
+                if (0 === --stackCalls) {
+                    stackCalls = maxStackCalls;
+
+                    setTimeout(function() {
+                        (fns[n])(next);
+                    }, 0);
+                }
+                else {
+                    (fns[n])(next);
+                }
             }
         }
     };

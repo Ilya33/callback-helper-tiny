@@ -6,7 +6,7 @@ var cht = require('../dist/callbacksHelperTiny.js');
 
 
 
-describe('clbWaitAll', () => {
+describe('clbWaitAll', function() {
     it('without error', (done) => {
         cht.clbWaitAll([
                 (clb) => {
@@ -82,11 +82,35 @@ describe('clbWaitAll', () => {
                 done();
         });
     });
+
+
+    it('1 thousand and 24 callbacks', function(done) {
+        var l = 1024;
+        var fns = [];
+
+        for (var i=0; i<l; i++) {
+            fns[i] = (clb) => {
+                setTimeout( () => { clb(null, ++i) }, 1);
+            }
+        }
+
+        i = -1;
+        cht.clbWaitAll(fns,
+            (err, data) => {
+                assert.equal(err, null);
+
+                for (var i=0; i<l; i++) {
+                    assert.equal(data[i], i);
+                }
+
+                done();
+        });
+    });
 });
 
 
 
-describe('clbQueue', () => {
+describe('clbQueue', function(suite) {
     it('without error', (done) => {
         cht.clbQueue([
                 (clb) => {
@@ -158,6 +182,32 @@ describe('clbQueue', () => {
         cht.clbQueue([],
             (err, data) => {
                 assert.equal(err, null);
+                done();
+        });
+    });
+
+
+    it('1 thousand and 24 callbacks', function(done) {
+        var l = 1024;
+        var fns = [];
+
+        this.timeout(120 * 1024);
+
+        for (var i=0; i<l; i++) {
+            fns[i] = (clb) => {
+                setTimeout( () => { clb(null, ++i) }, 1);
+            }
+        }
+
+        i = -1;
+        cht.clbQueue(fns,
+            (err, data) => {
+                assert.equal(err, null);
+
+                for (var i=0; i<l; i++) {
+                    assert.equal(data[i], i);
+                }
+
                 done();
         });
     });
