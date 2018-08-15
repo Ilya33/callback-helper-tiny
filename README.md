@@ -13,9 +13,9 @@ npm install callbacks-helper-tiny
 
 ## Functions
 
-    `clbQueue(arrayOfCallbacks, callback)` - call callbacks in `arrayOfCallbacks` one after the other then call `callback`.
+`clbQueue(arrayOfCallbacks, callback)` - call callbacks in `arrayOfCallbacks` one after the other then call `callback`.
 
-    `clbWaitAll(arrayOfCallbacks, callback)` - call all callbacks in `arrayOfCallbacks`. When all callbacks are done call `callback`.
+`clbWaitAll(arrayOfCallbacks, callback)` - call all callbacks in `arrayOfCallbacks`. When all callbacks are done call `callback`.
 
 
 ## Usage
