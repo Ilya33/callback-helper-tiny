@@ -2,7 +2,7 @@
 
 var assert = require('chai').assert;
 var expect = require('chai').expect;
-var cht = require('../dist/callbacksHelperTiny.js');
+var cht = require('../lib/callbacksHelperTiny.js');
 
 
 
@@ -191,7 +191,7 @@ describe('clbQueue', function(suite) {
         var l = 1024;
         var fns = [];
 
-        this.timeout(120 * 1024);
+        this.timeout(120 * l);
 
         for (var i=0; i<l; i++) {
             fns[i] = (clb) => {

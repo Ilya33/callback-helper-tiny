@@ -2,7 +2,7 @@
   "name": "callbacks-helper-tiny",
   "version": "0.1.0",
   "description": "",
-  "main": "dist/callbacksHelperTiny.js",
+  "main": "lib/callbacksHelperTiny.js",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
