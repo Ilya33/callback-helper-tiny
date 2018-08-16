@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "description": "",
   "main": "lib/callbacksHelperTiny.js",
-  "types": "lib/callbacksHelperTiny.d.ts"
+  "types": "lib/callbacksHelperTiny.d.ts",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
