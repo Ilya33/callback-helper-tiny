@@ -13,20 +13,25 @@ npm install callbacks-helper-tiny
 
 ## Functions
 
-`clbQueue(arrayOfCallbacks, callback)` - call callbacks in `arrayOfCallbacks` one after the other then call `callback`.
-
 `clbWaitAll(arrayOfCallbacks, callback)` - call all callbacks in `arrayOfCallbacks`. When all callbacks are done call `callback`.
+
+`clbQueue(arrayOfCallbacks, callback)` - call callbacks in `arrayOfCallbacks` one after the other then call `callback`.
 
 
 ## Usage
 
+### JavaScript
+
 ```js
-var cht = require('callbacks-helper-tiny');
+const clbWaitAll    = require('callbacks-helper-tiny').clbWaitAll;
+const clbQueue      = require('callbacks-helper-tiny').clbQueue;
+
 
 // short example
-var callbacksQueue = [];
+let callbacksQueue = [];
+let i;
 
-for (var i=0; i<8; i++) {
+for (i=0; i<8; i++) {
     callbacksQueue.push(function(clb) {
         ajax(data,
             function() { // success
@@ -39,7 +44,7 @@ for (var i=0; i<8; i++) {
     });
 }
 
-cht.clbQueue(callbacksQueue, function(err) {
+clbQueue(callbacksQueue, function(err) {
     if (err) {
         console.log(err);
     }
@@ -50,7 +55,7 @@ cht.clbQueue(callbacksQueue, function(err) {
 
 
 // another example
-cht.clbQueue([
+clbQueue([
         function(clb) { // wrapper
             setTimeout( function() { // your callback
                 clb(null, 42); // clb( Error, customDataIfNeeded)
@@ -78,7 +83,7 @@ cht.clbQueue([
 });
 
 
-cht.clbWaitAll([
+clbWaitAll([
         function(clb) { // wrapper
             setTimeout( function() { // your callback
                 clb(null, 42); // clb( Error, customDataIfNeeded)
