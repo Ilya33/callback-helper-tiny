@@ -1,9 +1,15 @@
 // callbacks-helper-tiny - Copyright (C) 2018-2019 Ilya Pavlov
 // callbacks-helper-tiny is licensed under the MIT License
 
+interface FnClb {
+    ( err: Error | null, data?: any ): void
+}
+
+
+
 export function clbWaitAll(
-    fns: (( clb: ( err: Error | null, data?: any ) => void ) => void)[],
-    clb: (err: Error | null, data?: any) => void
+    fns: (( clb: FnClb ) => void)[],
+    clb: (err: Error | null, data: any[]) => void
 ): void {
     const l: number = fns.length;
 
@@ -18,7 +24,7 @@ export function clbWaitAll(
     let mixedResults: any[] = [];
 
     for (i=0; i<l; ++i) {
-        (fns[i])( (err: Error | null, data?: any): void => {
+        (fns[i])( (err, data) => {
             if (false === hasError) {
                 if (err) {
                     hasError = true;
@@ -39,8 +45,8 @@ export function clbWaitAll(
 
 
 export function clbQueue(
-    fns: (( clb: ( err: Error | null, data?: any ) => void ) => void)[],
-    clb: (err: Error | null, data?: any) => void
+    fns: (( clb: FnClb ) => void)[],
+    clb: (err: Error | null, data: any[]) => void
 ): void {
     const l: number = fns.length;
 
@@ -55,7 +61,7 @@ export function clbQueue(
     let n: number = 0;
     let results: any[] = [];
 
-    let next = (err: Error | null, data?: any): void => {
+    const next: FnClb = (err, data) => {
         if (err) {
             clb(err, data);
         }

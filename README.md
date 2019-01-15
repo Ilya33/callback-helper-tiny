@@ -7,7 +7,7 @@ callbacks-helper-tiny is a tiny library on Typescript (and JavaScript) which hel
 ## Install
 
 ```
-npm install callbacks-helper-tiny
+npm i callbacks-helper-tiny
 ```
 
 
