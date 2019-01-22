@@ -1,12 +1,12 @@
 {
     "files": [
-        "src/callbacksHelperTiny"
+        "test"
     ],
     "compilerOptions": {
-        "target": "es6",
+        "target": "es5",
         "module": "commonjs",
         "declaration": true,
-        "outDir": "./lib",
+        "outDir": "./",
         "strict": true
     }
 }
