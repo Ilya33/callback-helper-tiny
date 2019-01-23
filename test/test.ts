@@ -7,6 +7,10 @@ import {
 
 
 
+const MAX_CLB_WAIT_TIME = 240;
+
+
+
 describe('clbWaitAll', function() {
     it('empty array 0', (done) => {
         clbWaitAll([], (err, data) => {
@@ -80,8 +84,9 @@ describe('clbWaitAll', function() {
     });
 
 
-    it('1 thousand and 24 callbacks', (done) => {
+    it('1 thousand and 24 callbacks', function(done) {
         const l = 1024;
+        this.timeout(MAX_CLB_WAIT_TIME * l);
         let fns = [];
 
         for (let i: number = 0; i<l; ++i) {
@@ -108,9 +113,6 @@ describe('clbWaitAll', function() {
 
 
 describe('clbQueue', function() {
-    const suite = this;
-
-
     it('empty array 0', (done) => {
         clbQueue([], (err, data) => {
                 expect(err).to.be.a('null');
@@ -128,30 +130,17 @@ describe('clbQueue', function() {
         done();
     });
 
-/*
-    it('without error', (done) => {
-        cht.clbQueue([
-                (clb) => {
-                    setTimeout( () => { clb(null) }, 1);
-                },
-                (clb) => {
-                    setTimeout( () => { clb(null) }, 1);
-                }
-            ],
-            (err) => {
-                assert.equal(err, null);
-                done();
-        });
-    });
-
 
     it('with error', (done) => {
-        cht.clbQueue([
+        clbQueue([
                 (clb) => {
                     setTimeout( () => { clb(null) }, 1);
                 },
                 (clb) => {
-                    setTimeout( () => { clb( new Error('error') ) }, 1);
+                    setTimeout( () => { clb(null, 2) }, 1);
+                },
+                (clb) => {
+                    setTimeout( () => { clb( new Error('test error') ) }, 20);
                 }
             ],
             (err) => {
@@ -161,73 +150,60 @@ describe('clbQueue', function() {
     });
 
 
-    it('without error & with data', (done) => {
-        cht.clbQueue([
+    it('without data', (done) => {
+        clbQueue([
                 (clb) => {
-                    setTimeout( () => { clb(null, 8) }, 1);
+                    setTimeout( () => { clb(null) }, 1);
                 },
                 (clb) => {
-                    setTimeout( () => { clb(null, 7) }, 1);
+                    setTimeout( () => { clb(null) }, 1);
                 }
             ],
-            (err, data) => {
-                assert.equal(err, null);
-                assert.equal(data[0], 8);
-                assert.equal(data[1], 7);
+            (err) => {
+                expect(err).to.be.a('null');
                 done();
         });
     });
 
 
-    it('with error & with error data', (done) => {
-        cht.clbQueue([
+    it('with data', (done) => {
+        clbQueue([
                 (clb) => {
-                    setTimeout( () => { clb(null, 8) }, 1);
+                    setTimeout( () => { clb(null, '42') }, 20);
                 },
                 (clb) => {
-                    setTimeout( () => { clb( new Error('error'), 42 ) }, 1);
+                    setTimeout( () => { clb(null, 8) }, 1);
                 }
             ],
             (err, data) => {
-                expect(err).to.be.an('error');
-                assert.equal(data, 42);
-                done();
-        });
-    });
-
-
-    it('empty array', (done) => {
-        cht.clbQueue([],
-            (err, data) => {
-                assert.equal(err, null);
+                expect(err).to.be.a('null');
+                expect(data).to.be.an('array').that.eql(['42', 8]);
                 done();
         });
     });
 
 
     it('1 thousand and 24 callbacks', function(done) {
-        var l = 1024;
-        var fns = [];
+        const l = 1024;
+        this.timeout(MAX_CLB_WAIT_TIME * l);
+        let fns = [];
 
-        this.timeout(120 * l);
-
-        for (var i=0; i<l; i++) {
-            fns[i] = (clb) => {
-                setTimeout( () => { clb(null, ++i) }, 1);
+        for (let i: number = 0; i<l; ++i) {
+            fns[i] = (clb: ClbWithOptionalData) => {
+                setTimeout( () => { clb(null, i) }, Math.floor(Math.random() * 4) );
             }
         }
 
-        i = -1;
-        cht.clbQueue(fns,
-            (err, data) => {
-                assert.equal(err, null);
+        clbQueue(fns, (err, data) => {
+                expect(err).to.be.a('null');
 
-                for (var i=0; i<l; i++) {
-                    assert.equal(data[i], i);
-                }
-
+                let i: number = 0;
+                expect(data).to.be.an('array').that.eql(
+                    (<any>Array(l)).fill(0).map(() => {
+                        return i++;
+                    })
+                );
                 done();
         });
     });
-*/
 });

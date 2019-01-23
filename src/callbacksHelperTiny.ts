@@ -63,7 +63,7 @@ export function clbQueue(
 
     const next: ClbWithOptionalData = (err, data) => {
         if (err) {
-            clb(err, data);
+            clb(err, []);
         }
         else {
             results[n] = data;

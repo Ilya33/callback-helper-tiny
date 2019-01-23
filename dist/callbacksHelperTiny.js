@@ -1,5 +1,5 @@
 "use strict";
-// callbacks-helper-tiny - Copyright (C) 2018 Ilya Pavlov
+// callbacks-helper-tiny - Copyright (C) 2018-2019 Ilya Pavlov
 // callbacks-helper-tiny is licensed under the MIT License
 Object.defineProperty(exports, "__esModule", { value: true });
 function clbWaitAll(fns, clb) {
@@ -12,12 +12,12 @@ function clbWaitAll(fns, clb) {
     var hasError = false;
     var i;
     var mixedResults = [];
-    for (i = 0; i < l; i++) {
+    for (i = 0; i < l; ++i) {
         (fns[i])(function (err, data) {
             if (false === hasError) {
                 if (err) {
                     hasError = true;
-                    clb(err, data);
+                    clb(err, []);
                 }
                 else {
                     mixedResults[n] = data;
@@ -42,7 +42,7 @@ function clbQueue(fns, clb) {
     var results = [];
     var next = function (err, data) {
         if (err) {
-            clb(err, data);
+            clb(err, []);
         }
         else {
             results[n] = data;
@@ -52,9 +52,7 @@ function clbQueue(fns, clb) {
             else {
                 if (0 === --stackCalls) {
                     stackCalls = maxStackCalls;
-                    setTimeout(function () {
-                        (fns[n])(next);
-                    }, 0);
+                    setTimeout(function () { return (fns[n])(next); }, 0);
                 }
                 else {
                     (fns[n])(next);
