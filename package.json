@@ -1,7 +1,7 @@
 {
   "name": "callbacks-helper-tiny",
-  "version": "0.2.0",
-  "description": "",
+  "version": "0.3.0",
+  "description": "callbacks-helper-tiny is a tiny library on Typescript (and JavaScript) which help to wait for multiple callbacks to finish.",
   "main": "lib/callbacksHelperTiny.js",
   "types": "lib/callbacksHelperTiny.d.ts",
   "scripts": {
