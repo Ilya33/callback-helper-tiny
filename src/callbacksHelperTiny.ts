@@ -6,6 +6,11 @@ export interface CbErrorOnly {
 }
 
 
+export interface CbWithOptionalData {
+    ( err: Error | null, data?: any ): void
+}
+
+
 
 export function cbWaitAll(
     fns: (( cb: CbErrorOnly ) => void)[],
@@ -31,6 +36,42 @@ export function cbWaitAll(
                 }
                 else if (++n === l) {
                     cb(null);
+                }
+            }
+        });
+    }
+}
+
+
+
+export function cbWaitAllWithData(
+    fns: (( cb: CbWithOptionalData ) => void)[],
+    cb: (err: Error | null, data: any[]) => void
+): void {
+    const l: number = fns.length;
+
+    if (0 === l) {
+        cb(null, []);
+        return;
+    }
+
+    let n: number = 0;
+    let hasError: boolean = false;
+    let results: any[] = [];
+
+    for (let i: number=0; i<l; ++i) {
+        (fns[i])( (err, data) => {
+            if (false === hasError) {
+                if (err) {
+                    hasError = true;
+                    cb(err, []);
+                }
+                else {
+                    results[i] = data;
+
+                    if (++n === l) {
+                        cb(null, results);
+                    }
                 }
             }
         });
@@ -80,74 +121,31 @@ export function cbQueue(
 
 
 
-// DEPRECATED
-export interface ClbWithOptionalData {
-    ( err: Error | null, data?: any ): void
-}
-
-
-export function clbWaitAll(
-    fns: (( clb: ClbWithOptionalData ) => void)[],
-    clb: (err: Error | null, data: any[]) => void
+export function cbQueueWithData(
+    fns: (( cb: CbWithOptionalData ) => void)[],
+    cb: (err: Error | null, data: any[]) => void,
+    maxStackCalls = 256
 ): void {
     const l: number = fns.length;
 
     if (0 === l) {
-        clb(null, []);
+        cb(null, []);
         return;
     }
 
-    let n: number = 0;
-    let hasError: boolean = false;
-    let i: number;
-    let mixedResults: any[] = [];
-
-    for (i=0; i<l; ++i) {
-        (fns[i])( (err, data) => {
-            if (false === hasError) {
-                if (err) {
-                    hasError = true;
-                    clb(err, []);
-                }
-                else {
-                    mixedResults[n] = data;
-
-                    if (++n === l) {
-                        clb(null, mixedResults);
-                    }
-                }
-            }
-        });
-    }
-}
-
-
-export function clbQueue(
-    fns: (( clb: ClbWithOptionalData ) => void)[],
-    clb: (err: Error | null, data: any[]) => void
-): void {
-    const l: number = fns.length;
-
-    if (0 === l) {
-        clb(null, []);
-        return;
-    }
-
-    const maxStackCalls: number = 256;
     let stackCalls: number = maxStackCalls;
-
     let n: number = 0;
     let results: any[] = [];
 
-    const next: ClbWithOptionalData = (err, data) => {
+    const next: CbWithOptionalData = (err, data) => {
         if (err) {
-            clb(err, []);
+            cb(err, []);
         }
         else {
             results[n] = data;
 
             if (++n === l) {
-                clb(null, results);
+                cb(null, results);
             }
             else {
                 if (0 === --stackCalls) {
@@ -163,4 +161,21 @@ export function clbQueue(
     };
 
     (fns[n])(next);
+}
+
+
+
+// DEPRECATED
+export function clbWaitAll(
+    fns: (( clb: CbWithOptionalData ) => void)[],
+    clb: (err: Error | null, data: any[]) => void
+): void {
+    cbWaitAllWithData(fns, clb);
+}
+
+export function clbQueue(
+    fns: (( clb: CbWithOptionalData ) => void)[],
+    clb: (err: Error | null, data: any[]) => void
+): void {
+    cbQueueWithData(fns, clb);
 }

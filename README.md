@@ -13,9 +13,13 @@ npm i callbacks-helper-tiny
 
 ## Functions
 
-`clbWaitAll(arrayOfCallbacks, callback)` - call all callbacks in `arrayOfCallbacks`. When all callbacks are done call `callback`.
+`cbWaitAll(arrayOfCallbacks, callback)` - call all callbacks in `arrayOfCallbacks`. When all callbacks are done call `callback`.
+
+`cbWaitAllWithData(arrayOfCallbacks, callback)` - call all callbacks in `arrayOfCallbacks`. When all callbacks are done call `callback`.
 
 `clbQueue(arrayOfCallbacks, callback)` - call callbacks in `arrayOfCallbacks` one after the other then call `callback`.
+
+`cbQueueWithData(arrayOfCallbacks, callback)` - call callbacks in `arrayOfCallbacks` one after the other then call `callback`.
 
 
 ## Usage
@@ -23,8 +27,10 @@ npm i callbacks-helper-tiny
 ### JavaScript
 
 ```js
-const clbWaitAll    = require('callbacks-helper-tiny').clbWaitAll;
-const clbQueue      = require('callbacks-helper-tiny').clbQueue;
+const cbWaitAll         = require('callbacks-helper-tiny').cbWaitAll;
+const cbWaitAllWithData = require('callbacks-helper-tiny').cbWaitAllWithData;
+const clbQueue          = require('callbacks-helper-tiny').clbQueue;
+const cbQueueWithData   = require('callbacks-helper-tiny').cbQueueWithData;
 
 
 // short example
@@ -55,7 +61,7 @@ clbQueue(callbacksQueue, function(err) {
 
 
 // another example
-clbQueue([
+cbQueueWithData([
         function(clb) { // wrapper
             setTimeout( function() { // your callback
                 clb(null, 42); // clb( Error, customDataIfNeeded)
@@ -77,13 +83,13 @@ clbQueue([
             console.log(err);
         }
         else {
-            // results from callbacks array if exists
+            // results from callbacks array
             console.log(results);
         }
 });
 
 
-clbWaitAll([
+cbWaitAllWithData([
         function(clb) { // wrapper
             setTimeout( function() { // your callback
                 clb(null, 42); // clb( Error, customDataIfNeeded)
@@ -100,13 +106,12 @@ clbWaitAll([
             }, 1000);
         },
     ],
-    function(err, mixedResults) { // when all callbacks done or error exists
+    function(err, data) { // when all callbacks done or error exists
         if (err) {
             console.log(err);
         }
         else {
-            // unsorted results from callbacks array if exists
-            console.log(mixedResults);
+            console.log(data);
         }
 });
 ```
